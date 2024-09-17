@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brokerage Site</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts - Blinker -->
+    <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Blinker', sans-serif;
+        }
+
+        section {
+            width: 100%; /* Fills the entire screen width */
+            padding: 50px 15px;
+            align-items: center;
+            color: white;
+        }
+
+        #hero {
+            height: 100vh; /* Takes up the entire viewport height */
+            background-image: url('/static/chartArt.png');
+            background-size: cover;
+            
+        }
+
+        #features {
+            background-color: #070953;
+            min-height: 50vh; /* Minimum height of half the screen */
+            padding: 20px 9px;
+        }
+
+        #about {
+            background-color: #2980b9;
+            min-height: 50vh;
+        }
+
+        #footer {
+            background-color: #1abc9c;
+            min-height: 20vh;
+        }
+
+        h2, p {
+            text-align: center;
+        }
+        .span{
+            flex-grow: 1;
+            }
+    </style>
+</head>
+<body>
+
+    <section id="hero">
+        <div>
+            <h2>Master the Markets with Precision</h2>
+            <p class="mt-3">Experience the future of trading right here at <em style="font-size: 24px;"><i style="color: blue;">N</i>extro</em></p>
+        </div>
+        <div style="text-align: center; align-items: center;">
+            <a style="border-color: blue; padding: 10px 19px; font-weight: bold; background-color: #0000ff; border-radius: 7px;" href="#" class="mt-3 btn btn-primary">Start Trading</a></br>
+            <a style="padding: 10px 21px; font-weight: bold; border-radius: 7px;" href="#" class="mt-2 btn btn-primary">Prop Firm</a>
+        </div>
+        <div style="line-height: 3; font-size: 16px;" class="mt-5">
+            <ul type=none>
+                <li> Join 300,000+ trader worldwide </li>
+                <li>Community Discussion</li>
+                <li>Get funded by our prop firm</li>
+                <li>24/7 Customer Assistance</li>
+                <li>Regulated by SEC</li>
+                
+            </ul>
+        </div>
+    </section>
+
+    <section id="features">
+        <div style="padding: 50px 6px; display: flex; justify-content: space-between; align-items: center;">
+            <h5 style="width:40%;margin-right: 18%; text-align: center;">Seize the markets with these offers</h5>
+            <div>
+                <ul style="line-height: 2;">
+                    <li> Instant withdrawals and deposit</li>
+                    <li>Tight spreads</li>
+                    <li>Up to 1:3000 leverage</li>
+                    <li>Minimum deposit from $5</li>
+                    <li>Multiple payment methods</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div>
+            <h2>About Us</h2>
+            <p>We are committed to providing a world-class trading experience.</p>
+        </div>
+    </section>
+
+    <section id="footer">
+        <div>
+            <p>Contact us | Privacy Policy | Terms of Service</p>
+        </div>
+    </section>
+
+</body>
+</html>
