@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    
+        <meta charset="UTF-8">
+    
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+        <title>Nextro</title>
+
+    <!-- Bootstrap CSS -->
+    
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts - Blinker -->
+    
+        <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@300;400;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Poppin Sans:wght@300;400;700&display=swap" rel="stylesheet">
+
+    
+        <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppin Sans', sans-serif;
+        }
+
+        section {
+            width: 100%; /* Fills the entire screen width */
+            padding: 50px 15px;
+            align-items: center;
+            color: white;
+        }
+
+        #hero {
+            height: 100vh; /* Takes up the entire viewport height */
+            background-image: url('/static/chartArt.png');
+            background-size: cover;
+
+        }
+
+        #features {
+            background-color: #070953;
+            min-height: 50vh; /* Minimum height of half the screen */
+            padding: 20px 9px;
+            border-bottom: 1px solid white;
+        }
+
+        #about {
+            background-color: #2980b9;
+            min-height: 50vh;
+        }
+
+        #footer {
+            background-color: #1abc9c;
+            min-height: 20vh;
+        }
+
+        h2{
+            margin-top: 15px;
+            text-align: center;
+            font-family: 'Blinker', sans-serif;
+            
+        }
+        .span{
+            flex-grow: 1;
+            }
+        label{
+            margin-top: 22px;
+        }
+        input{
+            padding: 10px 27px;
+            border: 1px solid black;
+            border-radius: 6px;
+        }
+        
+    
+        </style>
+
+    </head>
+
+    <body>
+        <div>
+            <h2> Create Account</h2>
+        </div>
+        
+        <div style="padding: 1px 13px;">
+            <form>
+                <label>Email Address</label></br>
+                <input type="email"></br>
+
+                <label>Username</label></br>
+                <input type="text"></br>
+
+                <label>Password</label></br>
+                <input type="text"></br>
+                <div style="margin-top: 15px;">
+                    <p style="text-align: center;">Proceeding to signup means that you have read, understood and accepted our <a href="#">terms of service</a> and <a href="#">privacy policy</a>.</p>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: center; margin-top: 30px;">
+                <button style="cursor: pointer; padding: 10px 28px; background-color: #070640; font-weight: bold; border-radius: 8px; border: 1px solid #070650;" class="btn btn-primary">Signup</button>
+                
+                </div>
+                <p style="margin-top: 3px; text-align: center;">Already have an account? <a href="#" style="color: #070650; font-weight: bold;">Login.</a></p>
+            </form>
+        </div>
+    </body>
+</html>
