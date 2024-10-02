@@ -39,6 +39,7 @@
         input:hower{
             border: 2px solid #070650;
         }
+        small{margin-left:31px;}
         
     </style>
 </head>
@@ -51,6 +52,7 @@
                 <input type="type" id="token" name="resetToken" required>
             </div></br>
             <small id="small1">Incorrect Token. Check your email again.</small>
+            <p id="tokenError"> {{ token }}</p>
                 
             
             
@@ -63,10 +65,11 @@
     <script>
         document.getElementById('resetTokenForm').addEventListener('submit', function (event) {
             let valid = true;
-
+            
+            let token = {{ session['token'] | tojson }};
             const username = document.getElementById('token').value;
             var small1 = document.getElementById('small1');
-            if (username != {{token}}) {
+            if (username !== token) {
             small1.style.color = "red";
                 valid = false;
             }

@@ -1,4 +1,4 @@
-from flask import Flask,request, render_template, session
+from flask import Flask,request, render_template, session, redirect, url_for
 import sqlite3
 from os import environ
 from secrets import token_urlsafe
@@ -15,7 +15,7 @@ def reset_token():
   
 con = getConn()
 cursor = con.cursor()
-cursor.execute("CREATE TABLE IF NOT EXISTS users (name TEXT, email TEXT, password TEXT, country TEXT, reset Text Nullable)")
+cursor.execute("CREATE TABLE IF NOT EXISTS users (name TEXT, email TEXT, password TEXT, country TEXT, reset Text)")
 
 con.commit()
 con.close()
@@ -45,7 +45,7 @@ def login():
 @app.route("/loginDetail", methods=["POST"])
 def loginDetail():
   if request.method == "POST":
-    email = request.form["email"]
+    email = request.form["email"].strip()
     password = request.form["password"]
     con = getConn()
     cursor = con.cursor()
@@ -59,9 +59,12 @@ def loginDetail():
     else:
       con.close()
       return "Wrong email or password", 400
-@app.route("/newPassword", methods=["POST"])
+      
+@app.route("/newPassword", methods=["POST", "GET"])
 def newPassword():
-  return "Token Match!!", 200;
+  if request.method == "POST":
+    return render_template("newPassword.html")
+    
 
   
 @app.route("/resetToken")
@@ -83,7 +86,7 @@ def resetEmailDetail():
   sender_email = "officialtutspot@gmail.com"
   sender_password = "nuhu gkud kyud fgae"
   recipient_email = email
-  body = f"Your password reset token is {token}"
+  body = f"Your password reset token is {session['token']}"
   subject = 'Password Reset'
   message = MIMEMultipart()
   message["From"] = "Tutspot.net"
@@ -98,7 +101,7 @@ def resetEmailDetail():
     print("Email sent successfully!")
   except Exception as e:
     print(f"Failed to send email: {e}")
-  return redirect(url_for(resetToken))
+  return redirect(url_for("resetToken"))
          
   
     
@@ -121,7 +124,7 @@ def signupDetail():
       return "Email already exists", 404
         
     else:
-      cursor.execute("INSERT INTO users VALUES(:name, :email, :password, :country)", {'name':name, 'email':email, 'password':password, 'country':country})
+      cursor.execute("INSERT INTO users VALUES(:name, :email, :password, :country, '00000')", {'name':name, 'email':email, 'password':password, 'country':country})
       con.commit()
       con.close()
       return "Success", 200;
