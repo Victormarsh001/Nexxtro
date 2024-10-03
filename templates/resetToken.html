@@ -39,14 +39,14 @@
         input:hower{
             border: 2px solid #070650;
         }
-        small{margin-left:31px;}
+        small{margin-left:31px; color:white;}
         
     </style>
 </head>
 <body>
 
         <h2 class="mt-2">Reset Token</h2>
-        <form id="resetTokenForm" action="/newPassword" method="POST">
+        <form id="resetTokenForm" action="/resetToken" method="POST">
             <p class="mt-4" style="text-align: center;">Enter the token that was sent to your email.</p>
             <div class="mt-4">
                 <input type="type" id="token" name="resetToken" required>

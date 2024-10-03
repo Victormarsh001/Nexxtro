@@ -63,13 +63,24 @@ def loginDetail():
 @app.route("/newPassword", methods=["POST", "GET"])
 def newPassword():
   if request.method == "POST":
-    return render_template("newPassword.html")
+    password = request.form["password"]
     
+    con = getConn()
+    cursor = con.cursor()
+    cursor.execute("Update users set password = :password where email = :email", {'password':password, 'email':session['email']})
+    con.commit()
+    con.close()
+    session.pop('token', None)
+    return "Password Changed", 200
+  elif request.method == "GET":
+    return render_template("New_password.html")
 
   
-@app.route("/resetToken")
+@app.route("/resetToken", methods=["POST", "GET"])
 def resetToken():
   token = session['token']
+  if request.method == "POST":
+    return redirect(url_for("newPassword"))
   return render_template("resetToken.html", token=token)
       
 @app.route("/resetEmailDetail", methods= ["POST"])
