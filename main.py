@@ -1,3 +1,8 @@
+#set light and dark themes
+#set official email for reset token
+#handls before request 
+#change route names to avoid #unauthorized entry
+
 from flask import Flask,request, render_template, session, redirect, url_for
 import sqlite3
 from os import environ
@@ -9,10 +14,25 @@ from email.mime.multipart import MIMEMultipart
 def getConn():
   conn = sqlite3.connect('database.db')
   return conn
+
+def getCon():
+  conn = sqlite3.connect('account.db')
+  return conn
+  
 def reset_token():
   tok = token_urlsafe(16)
   return tok
-  
+
+conn = getCon()
+pointer = conn.cursor()
+pointer.execute("CREATE TABLE IF NOT EXISTS accounts(email Text, name TEXT, account_number TEXT, leverage TEXT, account_type TEXT, password Text, balance Text)")
+#pointer.execute("Insert into accounts #values('oqibz@example.com', 'John #Doe', '1234567890', '1:1000', #'Real','zitegeist','30')")
+
+conn.commit()
+conn.close()
+
+
+
 con = getConn()
 cursor = con.cursor()
 cursor.execute("CREATE TABLE IF NOT EXISTS users (name TEXT, email TEXT, password TEXT, country TEXT, reset Text)")
@@ -30,6 +50,17 @@ if not app.secret_key:
 @app.route("/")
 def hello():
   return render_template("login.html")
+
+@app.route("/account")
+def account():
+
+  conn = getCon()
+  cursor = conn.cursor()
+  cursor.execute("SELECT * FROM accounts")
+  account = cursor.fetchall()
+  conn.close()
+  
+  return render_template("account.html", account=account, theme="blac")
 
 @app.route("/signup")
 def signup():
@@ -54,7 +85,8 @@ def loginDetail():
     print(data)
     if data and data[0] == password:
       con.close()
-      return "Login Success", 200
+      session['email'] = email
+      return redirect(url_for("account"))
       
     else:
       con.close()
@@ -71,7 +103,8 @@ def newPassword():
     con.commit()
     con.close()
     session.pop('token', None)
-    return "Password Changed", 200
+    session.pop('email', None)
+    return redirect(url_for("login"))
   elif request.method == "GET":
     return render_template("New_password.html")
 
@@ -132,13 +165,13 @@ def signupDetail():
     print(data)
     if data and email in data[0]:
       con.close()
-      return "Email already exists", 404
+      return "Email already exists", 400
         
     else:
       cursor.execute("INSERT INTO users VALUES(:name, :email, :password, :country, '00000')", {'name':name, 'email':email, 'password':password, 'country':country})
       con.commit()
       con.close()
-      return "Success", 200;
+      return redirect(url_for("account"))
 
 if __name__ == "__main__":
   app.run(debug=True)
