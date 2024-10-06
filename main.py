@@ -18,10 +18,27 @@ def getConn():
 def getCon():
   conn = sqlite3.connect('account.db')
   return conn
+
+def getPost():
+  conn = sqlite3.connect('diss.db')
+  return conn
   
 def reset_token():
   tok = token_urlsafe(16)
   return tok
+
+co = getPost()
+posts = co.cursor()
+posts.execute("CREATE TABLE IF NOT EXISTS posts(id Text, email Text, name Text, date Text, post Text)")
+
+posts.execute("CREATE TABLE IF NOT EXISTS comments(id Text, name Text, date Text, comment Text)")
+
+posts.execute("Insert into comments Values(:id, :name, :date, :comment)", {'id':'1', 'name':'Victor Basy', 'date':'6/10/2021', 'comment':'You too man'})
+
+posts.execute("Insert into posts Values(:id, :email, :name, :date, :post)", {'id':'1', 'email':'victorbasy17.3@gmail.com', 'name':'Victor Basy', 'date':'6/10/2021', 'post':'Have a nice trading day everyone!!'})
+co.commit()
+co.close()
+
 
 conn = getCon()
 pointer = conn.cursor()
@@ -49,7 +66,33 @@ if not app.secret_key:
 
 @app.route("/")
 def hello():
-  return render_template("login.html")
+  return redirect(url_for("post"))
+
+@app.route("/commentView")
+def commentView():
+  id = request.args.get("id")
+  name = request.args.get("name")
+  if not id or not name:
+    return redirect(url_for("post"))
+  
+  con = getPost()
+  cursor = con.cursor()
+  cursor.execute("Select comment, name, date from comments where id = :id", {'id':id})
+  data = cursor.fetchall()
+  con.close()
+  
+  return render_template("commentView.html", data=data, name=name)
+
+
+@app.route("/post")
+def post():
+  post = getPost()
+  cursor = post.cursor()
+  cursor.execute("Select * from posts")
+  data = cursor.fetchall()
+  post.close()
+  return render_template("post.html", data=data)
+
 
 @app.route("/account")
 def account():
@@ -61,6 +104,8 @@ def account():
   conn.close()
   
   return render_template("account.html", account=account, theme="blac")
+
+
 
 @app.route("/signup")
 def signup():
