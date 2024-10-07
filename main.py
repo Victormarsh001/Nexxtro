@@ -67,8 +67,12 @@ if not app.secret_key:
 
 @app.route("/")
 def hello():
-  return redirect(url_for("login"))
+  return redirect(url_for("profile"))
 
+@app.route("/profile")
+def profile():
+  return render_template("profile.html")
+  
 @app.route("/publisher", methods=["GET", "POST"])
 def publisher():
   if request.method == "POST":
@@ -108,9 +112,9 @@ def commentView():
   id = request.args.get("id")
   name = request.args.get("name")
 
-  if 'commentId' not in session or 'name'  not in session:
+  if 'commentId' not in session or 'commentName'  not in session:
     session['commentId'] = id
-    session['name'] = name
+    session['commentName'] = name
 
   
   con = getPost()
@@ -118,11 +122,14 @@ def commentView():
   cursor.execute("Select * from comments where id = :id", {'id':session['commentId']})
   data = cursor.fetchall()[::-1]
   con.close()
-  return render_template("commentView.html", data=data, name=session['name'])
+  return render_template("commentView.html", data=data, name=session['commentName'])
 
 
 @app.route("/post")
 def post():
+  if 'commentId' in session and 'commentName' in session:
+    session.pop('commentId', None)
+    session.pop('commentName', None)
   post = getPost()
   cursor = post.cursor()
   cursor.execute("Select * from posts")

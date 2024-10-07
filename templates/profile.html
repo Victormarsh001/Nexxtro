@@ -29,6 +29,7 @@
         }
 
         body{
+            background-color:white;
             padding-bottom: 60px;
             
             {% if theme == "black"%}
@@ -55,12 +56,11 @@
         }
 
         h2{
-            margin-top: 15px;
+            margin-top: 12px;
             font-family: 'Blinker', sans-serif;
-            padding-left: 13px;
+            padding-left: 8px;
             
         }
-            h6{font-weight: bold;}
             
         h2, a, p, span{
             font-family: 'Open Sans', sans-serif;
@@ -71,27 +71,40 @@
             {% endif %}
   
         }
-        p{
-            text-align: left;
-            font-size: 15px;
-            margin-top: 12px;
+        .bord{
+            padding: 20px;
+            border-radius: 9px;
+            margin-top: 17px;
+            margin-bottom: 25px;
+            box-shadow: 0px 0px 5px  rgba(0, 0, 0, 0.2);
+            {% if theme == "black" %}
+            border: 2px solid white;
+            {% else %}
+            border: 0px solid black;
+            background-color: white;
+            {% endif %}
         }
-            i{
-                font-size: 12px; 
-            }
-        h6{
-            font-weight: bold;
-            letter-spacing: 1px;
+        .bord:hover{
+            transform: scale(1.05);
+            text-decoration: none;     
         }
-            .bord{
-                margin-top: 17px;
-                border: 0px solid #ffffff;
-                padding: 10px;
-                border-radius: 5px;
-                background-color: #e9e9e9;
-            }
             .a{
-            text-decoration: none;
+                border: 0px solid #fff;
+                text-decoration: none;
+                padding: 9px 9px 1px 0px;
+                font-size: 18px;
+                font-family: 'Open Sans', sans-serif;
+                font-weight: bold;
+                margin-left: 12px;
+            }
+            .bod{
+                border: 0px solid white;
+                border-radius: 3px; background-color: white;
+                padding: 7px 7px 1px 3px;
+            }
+            .i{
+                font-size: 26px;
+                color: gray;
             }
         
     
@@ -101,40 +114,45 @@
 
     <body>
         <div>
-            <h2 style="font-family: 'Blinker', sans-serif;"> Community</h2>
+            <h2 style="font-family: 'Blinker', sans-serif;"> Profile</h2>
         </div>
 
     
-        {% if not data %}
-            
-            
-        <div style="margin-top: 50%;">
-            <p style="text-align: center;">Start a discussion</p>
-            <a class="btn btn-primary" style="background-color: #070650; border: 2px solid #070650; padding: 10px 27px; border-radius: 6px; margin-left: 70px;">Post</a>
-        </div>
-        {% else %}
-        
-        <div style="margin-top: 18px; padding: 15px;">
-        <p style="margin-right: 10px; text-align: right;"><a style="text-decoration: none; font-weight: bold;" href="/publisher">Create a post</a></p>
-        {% for i in data %}
-        <div class="bord"><a style="text-decoration: none;" href="/commentView?id={{i[0]}}&name={{i[2]}}">
-            {% if i[1] == session['email'] %}
-            <div style="display: flex; justify-content: space-between;">
-                <h6>{{ i[2] }} (You)</h6>
-                <i>{{ i[3] }}</i>
+        <div>
+            <div class="bod">
+                <a class="a"><i class="i fas fa-lightbulb mr-2"></i>Suggestion</a></br>
+            <p style="margin-top: 5px; font-size: 12px; margin-left: 11px; padding-left: 9px;">Help us get better with your good ideas.</p>
             </div>
-            {% else %}
-            <div style="display: flex; justify-content: space-between;">
-                <h6>{{ i[2] }}</h6>
-                <i>{{ i[3] }}</i>
+
+            <div class="bod">
+                <a class="a"><i class="i fas fa-star mr-2"></i>Feedback</a></br>
+            <p style="margin-top: 5px; font-size: 12px; margin-left: 11px; padding-left: 9px;">Describe your experience with us.</p>
             </div>
-            {% endif %}
+
+            <div class="bod">
+                <a class="a"><i class="i fas fa-exclamation-triangle mr-2"></i>Report an issue</a></br>
+            <p style="margin-top: 5px; font-size: 12px; margin-left: 11px; padding-left: 9px;">Make a report to resolve your problems</p>
+            </div>
+            <div class="bod">
+                <a class="a"><i class="i fas fa-question-circle mr-2"></i>FAQ</a></br>
+            <p style="margin-top: 5px; font-size: 12px; margin-left: 11px; padding-left: 9px;">Get quick answers from the Frequently Asked Questions.</p>
+            </div>
+            <div class="bod">
+                <a class="a"><i class="i fas fa-key mr-2"></i>Change Password</a></br>
+            <p style="margin-top: 5px; font-size: 12px; margin-left: 11px; padding-left: 9px;">Do you suspect strange activities in your account?</p>
+            </div>
+            <div class="bod">
+                <a class="a"><i class="i fas fa-file-contract mr-2"></i>Legal docs </a></br>
+            </div>
+            <div class="bod">
+                <a class="a"><i class="i fas fa-user-slash mr-2"></i>Delete Account</a></br>
+            </div>
+
+            <div style="margin-bottom: 30px;" class="bod">
+                <a class="a"><i class="i fas fa-sign-out-alt mr-2"></i>Log out</a></br>
             
-            <p> {{ i[4] }}</p>
-        </a>  
-        </div>
-        {% endfor %}
-        {% endif %}   
+            </div>
+               
 
         <nav class="navbar navbar-expand  navbar-light fixed-bottom">
   <div class="container-fluid justify-content-around">
@@ -154,7 +172,7 @@
       <span style="font-size: 12px;">News</span>
     </a>
     <!-- Community -->
-    <a href="/post" class="nav-link text-center" style="color: white; padding: 5px 10px; margin: 0;">
+    <a href="/post" class="nav-link text-center" style="padding: 5px 10px; margin: 0;">
       <i class="fas fa-users fa-md"></i><br>
       <span style="font-size: 12px;">Community</span>
     </a>
@@ -168,4 +186,4 @@
         
 
     <body>
-</html>
+    </html>
