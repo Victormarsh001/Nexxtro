@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write a Comment</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body{
+            font-family: 'Open Sans', sans-serif;
+        }
+        h3{
+            font-family: 'Blinker', sans-serif;
+        }
+        textarea{
+            border: 2px solid #070650;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Comment Form -->
+    <div style="margin-top: 105px;" class="container">
+        <h3>Add Comment</h3>
+        <form action="/comment"  method="post" id="commentForm">
+            <div class="form-group">
+                <textarea id="commentContent" class="form-control" rows="10" 
+                    name="comments"
+                    placeholder="Write your comment here..." maxlength="100"></textarea>
+                <small style="color: white;" id="commentError" class="form-text text-muted"></small>
+            </div>
+            <button style="font-weight: bold; padding-top: 7px; padding-bottom: 7px; background-color: #070650; width: 90%; margin-left: 5%; border: 1px solid #070650;" type="submit" class="btn btn-primary">Submit Comment</button>
+        </form>
+    </div>
+
+
+    <script>
+        document.getElementById('commentForm').addEventListener('submit', function(event) {
+            const commentContent = document.getElementById('commentContent').value.trim();
+            const commentError = document.getElementById('commentError');
+
+            if (commentContent === '') {
+                commentError.textContent = 'Comment cannot be empty.';
+                commentError.style.color = 'red';
+                event.preventDefault();
+            } else {
+                commentError.textContent = '';
+            }
+        });
+    </script>
+</body>
+</html>

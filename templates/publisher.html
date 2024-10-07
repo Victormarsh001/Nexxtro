@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a Post</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+
+    
+    <style>
+        body{
+            font-family: 'Open Sans', sans-serif;
+            
+        }
+        h3{
+            font-family: 'Blinker', sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Post Form -->
+    <div style="margin-top: 70px;" class="container">
+        <h3>Create Post</h3>
+        <form action="/publisher" method="post" class="mt-3" id="postForm">
+            <div class="form-group lead">
+                <textarea style="border-radius: 8px; border: 2px solid #070650; font-size: 14px;" name="post" id="postContent" class="form-control lead" rows="14" placeholder="Write your post here..." maxlength="400"></textarea>
+                <small  style="color: white;" id="postError" class="form-text text-muted"></small>
+            </div>
+            <button style="width: 90%; margin-left: 5%; background-color: #070650; padding-top: 7px; padding-bottom: 7px; border: 1px solid #070650; font-weight: bold;" type="submit" class="btn btn-primary mb-9">Publish</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('postForm').addEventListener('submit', function(event) {
+            const postContent = document.getElementById('postContent').value.trim();
+            const postError = document.getElementById('postError');
+
+            if (postContent === '') {
+                postError.textContent = 'Post cannot be empty.';
+                postError.style.color = "red";
+                event.preventDefault();
+            } else if (postContent.split(' ').length > 400) {
+                postError.textContent = 'Post cannot exceed 400 words.';
+                postError.style.color = "red";
+                event.preventDefault();
+            } else {
+                postError.textContent = '';
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -115,7 +115,7 @@
         {% else %}
         
         <div style="margin-top: 18px; padding: 15px;">
-        
+        <p style="margin-right: 10px; text-align: right;"><a style="text-decoration: none; font-weight: bold;" href="/publisher">Create a post</a></p>
         {% for i in data %}
         <div class="bord"><a style="text-decoration: none;" href="/commentView?id={{i[0]}}&name={{i[2]}}">
             {% if i[1] == session['email'] %}
