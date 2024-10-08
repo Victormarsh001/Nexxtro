@@ -1,3 +1,4 @@
+#set encryption and decryption algorithms
 #set light and dark themes
 #set official email for reset token
 #handls before request 
@@ -21,7 +22,7 @@ def getCon():
   return conn
 
 def getPost():
-  conn = sqlite3.connect('diss.db')
+  conn = sqlite3.connect('post.db')
   return conn
   
 def reset_token():
@@ -44,6 +45,7 @@ co.close()
 conn = getCon()
 pointer = conn.cursor()
 pointer.execute("CREATE TABLE IF NOT EXISTS accounts(email Text, name TEXT, account_number TEXT, leverage TEXT, account_type TEXT, password Text, balance Text)")
+
 #pointer.execute("Insert into accounts #values('oqibz@example.com', 'John #Doe', '1234567890', '1:1000', #'Real','zitegeist','30')")
 
 conn.commit()
@@ -54,6 +56,7 @@ conn.close()
 con = getConn()
 cursor = con.cursor()
 cursor.execute("CREATE TABLE IF NOT EXISTS users (name TEXT, email TEXT, password TEXT, country TEXT, reset Text)")
+cursor.execute("Create Table IF NOT EXISTS feedback(name Text, email Text, date Text, feedback Text)")
 
 con.commit()
 con.close()
@@ -67,7 +70,22 @@ if not app.secret_key:
 
 @app.route("/")
 def hello():
-  return redirect(url_for("profile"))
+  return redirect(url_for("login"))
+
+@app.route("/feedback", methods=["GET", "POST"])
+def feedback():
+  if request.method == "POST":
+    date = datetime.now().strftime("%d/%m/%Y")
+    feedback = request.form.get("feedback")
+    
+    con = getConn()
+    cursor = con.cursor()
+    cursor.execute("Insert into feedback Values(:name, :email, :date, :feedback)", {'name':session['name'], 'email':session['email'], 'date':date, 'feedback':feedback})
+    con.commit()
+    con.close()
+    return redirect(url_for("profile"))
+  return render_template("feedback.html")
+
 
 @app.route("/profile")
 def profile():
@@ -75,6 +93,9 @@ def profile():
   
 @app.route("/publisher", methods=["GET", "POST"])
 def publisher():
+  if 'email' not in session or 'name' not in session:
+    return redirect(url_for("login"))
+    
   if request.method == "POST":
     post = request.form.get("post")
     date = datetime.now().strftime("%d/%m/%Y")
@@ -180,7 +201,7 @@ def loginDetail():
       
     else:
       con.close()
-      return "Wrong email or password", 400
+      return "Incorrect email or password", 400
       
 @app.route("/newPassword", methods=["POST", "GET"])
 def newPassword():
@@ -212,30 +233,35 @@ def resetEmailDetail():
   token = reset_token()
   con = getConn()
   cursor = con.cursor()
-  cursor.execute("Update users set reset = :token Where email = :email", {"email": email, "token": token})
-  con.commit()
-  con.close()
-  session['email'] = email
-  session['token'] = token
-  sender_email = "officialtutspot@gmail.com"
-  sender_password = "nuhu gkud kyud fgae"
-  recipient_email = email
-  body = f"Your password reset token is {session['token']}"
-  subject = 'Password Reset'
-  message = MIMEMultipart()
-  message["From"] = "Tutspot.net"
-  message["To"] = recipient_email
-  message["Subject"] = subject
-  message.attach(MIMEText(body, "plain"))
-  try:
-    server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
-    server.login(sender_email, sender_password)
-    server.sendmail(sender_email, recipient_email, message.as_string())
-    server.quit()
-    print("Email sent successfully!")
-  except Exception as e:
-    print(f"Failed to send email: {e}")
-  return redirect(url_for("resetToken"))
+  cursor.execute("Select email from users where email = :email", {'email':email})
+  data = cursor.fetchone()
+  if not data or data[0] != email:
+    con.close()
+    return "Email not found", 400
+  else:
+    cursor.execute("Update users set reset = :token Where email = :email", {"email": email, "token": token})
+    con.commit()
+    con.close()
+    session['email'] = email
+    session['token'] = token
+    sender_email = "officialtutspot@gmail.com"
+    sender_password = "nuhu gkud kyud fgae"
+    recipient_email = email
+    body = f"Your password reset token is {session['token']}"
+    subject = 'Password Reset'
+    message = MIMEMultipart()
+    message["From"] = "Tutspot.net"
+    message["To"] = recipient_email
+    message["Subject"] = subject
+    message.attach(MIMEText(body, "plain"))
+    try:
+      server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+      server.login(sender_email, sender_password)
+      server.sendmail(sender_email, recipient_email, message.as_string())
+      server.quit()
+    except Exception as e:
+      print(e)
+    return redirect(url_for("resetToken"))
          
   
     
@@ -262,6 +288,14 @@ def signupDetail():
       con.commit()
       con.close()
       return redirect(url_for("account"))
+
+
+@app.route("/logout")
+def logout():
+  for i in session:
+    session.pop(i, None)
+  return redirect(url_for("login"))
+    
 
 if __name__ == "__main__":
   app.run(debug=True)
