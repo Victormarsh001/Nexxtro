@@ -70,7 +70,12 @@ if not app.secret_key:
 
 @app.route("/")
 def hello():
-  return redirect(url_for("login"))
+  return redirect(url_for("faq"))
+
+@app.route("/faq")
+def faq():
+  return render_template("faq.html")
+
 
 @app.route("/feedback", methods=["GET", "POST"])
 def feedback():
