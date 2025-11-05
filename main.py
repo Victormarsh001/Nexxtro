@@ -74,8 +74,12 @@ def hello():
 
 @app.route("/faq")
 def faq():
-  ip_add = request.remote_addr
-  return render_template("faq.html", ip_add=ip_add)
+    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    res = requests.get(f"https://ipinfo.io/{ip}/json")
+    data = res.json()
+    print(data)
+# Example: {'city': 'Lagos', 'region': 'Lagos', 'country': 'NG'}
+    return render_template("faq.html",data=data)
 
 
 @app.route("/feedback", methods=["GET", "POST"])
