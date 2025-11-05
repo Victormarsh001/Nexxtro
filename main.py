@@ -74,7 +74,8 @@ def hello():
 
 @app.route("/faq")
 def faq():
-  return render_template("faq.html")
+  ip_add = request.remote_addr
+  return render_template("faq.html", ip_add=ip_add)
 
 
 @app.route("/feedback", methods=["GET", "POST"])
