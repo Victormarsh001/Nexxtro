@@ -70,7 +70,7 @@ if not app.secret_key:
 
 @app.route("/")
 def hello():
-  return redirect(url_for("faq"))
+  return render_template("home.html")
 
 @app.route("/faq")
 def faq():
